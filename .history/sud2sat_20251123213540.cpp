@@ -15,7 +15,7 @@ static const int NUM_COLS = 9;
 static const int NUM_DIGITS = 9;
 static const int NUM_VARS = NUM_ROWS * NUM_COLS * NUM_DIGITS; // 729
 
-// convert it to decimal representation
+// convert it to 
 int varnum(int r, int c, int d) {
     // r,c,d in [1..9]
     return 81 * (r - 1) + 9 * (c - 1) + d;
