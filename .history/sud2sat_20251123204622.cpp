@@ -1,13 +1,5 @@
 // sud2sat.cpp
-#include <iostream>
-#include <vector>
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <cstring>
-#include <cctype>
-#include <utility>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 static const int NUM_ROWS = 9;
