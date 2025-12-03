@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    // Read from STDIN by default; if a filename is given, read from that file.
+    // read from STDIN by default; if a filename is given, read from that file.
     istream *in = &cin;
     static ifstream fin;
     if (argc > 1) {
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
         in = &fin;
     }
 
-    // ----- Read first line: SAT or UNSAT -----
+    // read first line: SAT or UNSAT
     string firstLine;
     if (!std::getline(*in, firstLine)) {
         cerr << "Error: empty assignment file\n";
