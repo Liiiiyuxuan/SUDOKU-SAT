@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    // Read from STDIN by default; if a filename is given, read from that file.
+    // read from STDIN by default; if a filename is given, read from that file.
     istream *in = &cin;
     static ifstream fin;
     if (argc > 1) {
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
         in = &fin;
     }
 
-    // ----- Read first line: SAT or UNSAT -----
+    // read first line: SAT or UNSAT
     string firstLine;
     if (!std::getline(*in, firstLine)) {
         cerr << "Error: empty assignment file\n";
@@ -109,78 +109,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-
-
-// int main(int argc, char *argv[]) {
-//     ios::sync_with_stdio(false);
-//     cin.tie(nullptr);
-
-//     istream *in = &cin;
-//     if (argc > 1) {
-//         static ifstream fin;
-//         fin.open(argv[1]);
-//         if (!fin) {
-//             cerr << "Error: cannot open assignment file\n";
-//             return 1;
-//         }
-//         in = &fin;
-//     }
-
-//     vector<int> ints;
-//     string line;
-
-//     while (std::getline(*in, line)) {
-//         if (line.empty()) continue;
-
-//         stringstream ss(line);
-//         string tok;
-//         while (ss >> tok) {
-//             if (tok == "SAT" || tok == "UNSAT" || tok == "UNKNOWN" || tok == "v")
-//                 continue;
-//             int val;
-//             try {
-//                 val = stoi(tok);
-//             } catch (...) {
-//                 continue;
-//             }
-//             if (val == 0) {
-//                 // end of this line's assignment list, but maybe more lines follow
-//                 continue;
-//             }
-//             ints.push_back(val);
-//         }
-//     }
-
-//     // val[i] = true/false for variable i; index 0 unused
-//     vector<int> val(NUM_VARS + 1, 0); // 0=unset, 1=true, -1=false
-//     for (int x : ints) {
-//         if (x > 0 && x <= NUM_VARS) {
-//             val[x] = 1;
-//         } else if (x < 0 && -x <= NUM_VARS) {
-//             val[-x] = -1;
-//         }
-//     }
-
-//     int grid[9][9];
-//     memset(grid, 0, sizeof(grid));
-
-//     for (int v = 1; v <= NUM_VARS; ++v) {
-//         if (val[v] == 1) {
-//             int r, c, d;
-//             tie(r, c, d) = inv_varnum(v);
-//             grid[r-1][c-1] = d;
-//         }
-//     }
-
-//     // print solved Sudoku: 9 lines of 9 digits
-//     for (int r = 0; r < 9; ++r) {
-//         for (int c = 0; c < 9; ++c) {
-//             cout << grid[r][c];
-//         }
-//         cout << "\n";
-//     }
-
-//     return 0;
-// }
-
-
