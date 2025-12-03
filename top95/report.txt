@@ -1,0 +1,105 @@
+Loaded 95 puzzles from top95/top95_reformatted.txt
+
+==================== Minimal (sud2sat) encoding ====================
+Number of puzzles: 95
+All puzzles SAT? YES
+
+Metric: CPU time
+  Average over 50 puzzles : 0.005
+  Worst case              : 0.010 (on Grid 50)
+
+Metric: Eliminated clauses
+  Average over 50 puzzles : 0.000
+  Worst case              : 0.000 (on Grid 01)
+
+Metric: Memory used
+  Average over 50 puzzles : 5.248
+  Worst case              : 5.600 (on Grid 18)
+
+Metric: Number of clauses
+  Average over 50 puzzles : 8829.000
+  Worst case              : 8829.000 (on Grid 01)
+
+Metric: Number of variables
+  Average over 50 puzzles : 729.000
+  Worst case              : 729.000 (on Grid 01)
+
+Metric: Parse time
+  Average over 50 puzzles : 0.000
+  Worst case              : 0.000 (on Grid 01)
+
+Metric: Simplification time
+  Average over 50 puzzles : 0.000
+  Worst case              : 0.000 (on Grid 01)
+
+Metric: conflict literals
+  Average over 50 puzzles : 1946.779
+  Worst case              : 17120.000 (on Grid 50)
+
+Metric: conflicts
+  Average over 50 puzzles : 153.874
+  Worst case              : 1086.000 (on Grid 50)
+
+Metric: decisions
+  Average over 50 puzzles : 268.621
+  Worst case              : 1823.000 (on Grid 50)
+
+Metric: propagations
+  Average over 50 puzzles : 6986.853
+  Worst case              : 48634.000 (on Grid 50)
+
+Metric: restarts
+  Average over 50 puzzles : 1.874
+  Worst case              : 7.000 (on Grid 11)
+
+==================== Extended (sud2sat1) encoding ====================
+Number of puzzles: 95
+All puzzles SAT? YES
+
+Metric: CPU time
+  Average over 50 puzzles : 0.005
+  Worst case              : 0.005 (on Grid 03)
+
+Metric: Eliminated clauses
+  Average over 50 puzzles : 0.000
+  Worst case              : 0.000 (on Grid 03)
+
+Metric: Memory used
+  Average over 50 puzzles : 5.208
+  Worst case              : 5.450 (on Grid 02)
+
+Metric: Number of clauses
+  Average over 50 puzzles : 9525.568
+  Worst case              : 9703.000 (on Grid 21)
+
+Metric: Number of variables
+  Average over 50 puzzles : 729.000
+  Worst case              : 729.000 (on Grid 01)
+
+Metric: Parse time
+  Average over 50 puzzles : 0.000
+  Worst case              : 0.000 (on Grid 01)
+
+Metric: Simplification time
+  Average over 50 puzzles : 0.000
+  Worst case              : 0.000 (on Grid 01)
+
+Metric: conflict literals
+  Average over 50 puzzles : 57.737
+  Worst case              : 254.000 (on Grid 03)
+
+Metric: conflicts
+  Average over 50 puzzles : 9.958
+  Worst case              : 40.000 (on Grid 03)
+
+Metric: decisions
+  Average over 50 puzzles : 22.979
+  Worst case              : 92.000 (on Grid 03)
+
+Metric: propagations
+  Average over 50 puzzles : 1420.084
+  Worst case              : 3205.000 (on Grid 74)
+
+Metric: restarts
+  Average over 50 puzzles : 1.000
+  Worst case              : 1.000 (on Grid 01)

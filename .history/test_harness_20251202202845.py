@@ -2,9 +2,23 @@
 """
 Test harness for SAT-based Sudoku encodings using MiniSAT.
 
+Encodings:
+  - minimal  : ./sud2sat
+  - extended : ./sud2sat1
+Model -> Sudoku (optional check):
+  - ./sat2sud
+
+It:
+  * reads puzzles from p096_sudoku.txt
+  * for each puzzle and encoding:
+      - calls sud2sat / sud2sat1
+      - calls minisat on the CNF, capturing stats in stat.txt
+      - parses those stats
+  * prints average and worst-case statistics per encoding.
+
 You can run:
 
-    python3 test_harness.py input.txt
+    python3 run_sudoku_sat_tests.py
 
 and then use the printed summary in your report.
 """
@@ -20,7 +34,7 @@ from typing import Dict, List, Tuple
 # CONFIG – change paths/command names here if needed
 # ----------------------------------------------------------------------
 
-PUZZLE_FILE = "top95/top95_reformatted.txt"
+PUZZLE_FILE = "p096/p096_sudoku.txt"
 
 MINISAT_CMD = "minisat" 
 MINIMAL_ENCODER = "./sud2sat"
@@ -68,37 +82,31 @@ def rows_to_stdin_text(rows: List[str]) -> str:
 
 STAT_NUMBER_RE = re.compile(r"[\d.]+")  # integer or float
 
+
 def parse_minisat_stats(stat_text: str) -> Dict[str, float]:
     """
     Parse MiniSAT stats from the text of stat.txt.
 
     For each line of the form:
-        KEY ... : <numbers> ...
+        KEY .... : some numbers
     we store KEY -> first numeric value.
 
-    Works both for lines like
-        "|  Number of variables: 729 |"
-    and
-        "conflicts             : 0     (0 /sec)".
+    Typical keys:
+        "restarts", "conflicts", "decisions", "propagations",
+        "conflict literals", "Memory used", "CPU time"
     """
     stats: Dict[str, float] = {}
     for line in stat_text.splitlines():
         if ":" not in line:
             continue
-
         key, rest = line.split(":", 1)
-
-        # Remove spaces and leading/trailing '|' so that:
-        #   "|  Number of variables" -> "Number of variables"
-        key = key.strip().strip("|").strip()
-
+        key = key.strip()
         nums = STAT_NUMBER_RE.findall(rest)
         if not nums:
             continue
-
         stats[key] = float(nums[0])
-
     return stats
+
 
 # ----------------------------------------------------------------------
 # Running encoder + MiniSAT for one puzzle
@@ -170,6 +178,7 @@ def run_one(
 
     return is_sat, stats
 
+
 # ----------------------------------------------------------------------
 # Summarizing stats into a “report”
 # ----------------------------------------------------------------------
@@ -210,28 +219,7 @@ def summarize_encoding(
         print(f"  Average over 50 puzzles : {avg:.3f}")
         print(f"  Worst case              : {worst_val:.3f} (on {worst_grid})")
 
+
 # ----------------------------------------------------------------------
 # Main driver
 # --------------------------------------------------------------
-
-def main() -> None:
-    puzzles = read_puzzles(PUZZLE_FILE)
-    print(f"Loaded {len(puzzles)} puzzles from {PUZZLE_FILE}")
-
-    encodings = [
-        ("Minimal (sud2sat)", MINIMAL_ENCODER),
-        ("Extended (sud2sat1)", EXTENDED_ENCODER),
-    ]
-
-    for enc_name, enc_cmd in encodings:
-        enc_results: List[Tuple[str, bool, Dict[str, float]]] = []
-
-        for grid_name, rows in puzzles:
-            is_sat, stats = run_one(grid_name, rows, enc_cmd)
-            enc_results.append((grid_name, is_sat, stats))
-
-        summarize_encoding(enc_name, enc_results)
-
-
-if __name__ == "__main__":
-    main()

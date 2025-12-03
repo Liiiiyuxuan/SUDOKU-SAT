@@ -20,7 +20,7 @@ from typing import Dict, List, Tuple
 # CONFIG – change paths/command names here if needed
 # ----------------------------------------------------------------------
 
-PUZZLE_FILE = "top95/top95_reformatted.txt"
+PUZZLE_FILE = "top95/top95_reformatted."
 
 MINISAT_CMD = "minisat" 
 MINIMAL_ENCODER = "./sud2sat"

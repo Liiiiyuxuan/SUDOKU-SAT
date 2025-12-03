@@ -20,7 +20,7 @@ from typing import Dict, List, Tuple
 # CONFIG – change paths/command names here if needed
 # ----------------------------------------------------------------------
 
-PUZZLE_FILE = "top95/top95_reformatted.txt"
+PUZZLE_FILE = "p096/p096_sudoku.txt"
 
 MINISAT_CMD = "minisat" 
 MINIMAL_ENCODER = "./sud2sat"
@@ -209,6 +209,7 @@ def summarize_encoding(
         print(f"\nMetric: {metric}")
         print(f"  Average over 50 puzzles : {avg:.3f}")
         print(f"  Worst case              : {worst_val:.3f} (on {worst_grid})")
+
 
 # ----------------------------------------------------------------------
 # Main driver
