@@ -63,15 +63,6 @@ This project implements a SAT-based Sudoku solver that converts Sudoku puzzles i
    - `report.txt` – Performance report
    - `summarize2.txt` – Summary of encoding comparison results
 
-### Input/Output Files
-
-9. **`input/`** – Test inputs and outputs
-   - `00sudoku.in`, `01sudoku.in`, `03sudoku.in` – Sample puzzle files
-   - `*.cnf` – Generated DIMACS CNF files
-   - `*assign.txt` – MiniSAT assignment outputs
-   - `*solution.txt` – Decoded Sudoku solutions
-   - `*stat.txt` – MiniSAT statistics
-
 ### Documentation
 
 10. **`Sudoku as SAT.pdf`** – Reference material on SAT encoding
@@ -134,8 +125,13 @@ g++ -o sat2sud sat2sud.cpp
 # Solve using extended encoding
 ./solve1.sh 0
 
-# Manual pipeline
+# Manual pipeline for minimal encoding
 ./sud2sat < puzzle.in > puzzle.cnf
+minisat puzzle.cnf puzzle.assign > puzzle.stat
+./sat2sud < puzzle.assign > puzzle.solution
+
+# Manual pipeline for extended encoding
+./sud2sat1 < puzzle.in > puzzle.cnf
 minisat puzzle.cnf puzzle.assign > puzzle.stat
 ./sat2sud < puzzle.assign > puzzle.solution
 ```
