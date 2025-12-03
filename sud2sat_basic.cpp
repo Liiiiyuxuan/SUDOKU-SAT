@@ -23,7 +23,7 @@ int varnum(int r, int c, int d) {
 
 vector<vector<int>> clauses;
 
-// ---- Encoding builders ----
+// encoding builders
 // check if the cell has at least one number
 void add_cell_at_least_one() {
     // For each cell (r,c): (s_rc1 ∨ ... ∨ s_rc9)
@@ -119,8 +119,6 @@ void add_givens(const int grid[9][9]) {
         }
     }
 }
-
-// ---- IO helpers ----
 
 bool read_grid(istream &in, int grid[9][9]) {
     string all;
