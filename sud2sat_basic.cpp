@@ -24,7 +24,7 @@ int varnum(int r, int c, int d) {
 vector<vector<int>> clauses;
 
 // ---- Encoding builders ----
-
+// check if the cell has at least one number
 void add_cell_at_least_one() {
     // For each cell (r,c): (s_rc1 ∨ ... ∨ s_rc9)
     for (int r = 1; r <= NUM_ROWS; ++r) {
@@ -78,6 +78,7 @@ void add_box_at_most_one() {
     // (¬s_r1 c1 d ∨ ¬s_r2 c2 d)
     for (int br = 0; br < 3; ++br) {
         for (int bc = 0; bc < 3; ++bc) {
+            // build a list of the 9 cells in the box
             vector<pair<int,int>> cells;
             cells.reserve(9);
             for (int dr = 0; dr < 3; ++dr) {
@@ -105,7 +106,7 @@ void add_box_at_most_one() {
         }
     }
 }
-
+// check if the cell has at most one number(extended encoding)
 void add_cell_at_most_one() {
     // Extended: Each cell has at most one number.
     // (¬s_rcd1 ∨ ¬s_rcd2) for d1 < d2
@@ -123,6 +124,7 @@ void add_cell_at_most_one() {
     }
 }
 
+// check if the cell has at least one number(extended encoding)
 void add_row_at_least_one() {
     // Extended: each number appears at least once in each row.
     for (int r = 1; r <= NUM_ROWS; ++r) {
@@ -136,7 +138,7 @@ void add_row_at_least_one() {
         }
     }
 }
-
+// check if the cell has at least one number(extended encoding)
 void add_col_at_least_one() {
     // Extended: each number appears at least once in each column.
     for (int c = 1; c <= NUM_COLS; ++c) {
@@ -150,7 +152,7 @@ void add_col_at_least_one() {
         }
     }
 }
-
+// check if the cell has at least one number(extended encoding)
 void add_box_at_least_one() {
     // Extended: each number appears at least once in each 3x3 box.
     for (int br = 0; br < 3; ++br) {
@@ -176,6 +178,7 @@ void add_box_at_least_one() {
     }
 }
 
+// add the givens to the clauses
 void add_givens(const int grid[9][9]) {
     // Unit clauses for clues.
     for (int r = 1; r <= NUM_ROWS; ++r) {
@@ -190,68 +193,101 @@ void add_givens(const int grid[9][9]) {
 
 // ---- IO helpers ----
 
+// bool read_grid(istream &in, int grid[9][9]) {
+//     int rowCount = 0;
+//     string line;
+//     while (getline(in, line)) {
+//         // strip spaces
+//         string filtered;
+//         for (char ch : line) {
+//             if (!isspace((unsigned char)ch))
+//                 filtered.push_back(ch);
+//         }
+//         if (filtered.empty())
+//             continue;
+
+//         if (rowCount >= 9) break;
+
+//         if ((int)filtered.size() < 9) {
+//             cerr << "Error: each non-empty line must have at least 9 chars\n";
+//             return false;
+//         }
+
+//         for (int c = 0; c < 9; ++c) {
+//             char ch = filtered[c];
+//             if (ch == '.' || ch == '0') {
+//                 grid[rowCount][c] = 0;
+//             } else if (ch >= '1' && ch <= '9') {
+//                 grid[rowCount][c] = ch - '0';
+//             } else {
+//                 // treat as blank
+//                 grid[rowCount][c] = 0;
+//             }
+//         }
+//         rowCount++;
+//         if (rowCount == 9) break;
+//     }
+
+//     if (rowCount != 9) {
+//         cerr << "Error: expected 9 rows in puzzle\n";
+//         return false;
+//     }
+//     return true;
+// }
+
 bool read_grid(istream &in, int grid[9][9]) {
-    int rowCount = 0;
+    string all;
     string line;
+
+    // Read all lines and strip whitespace globally
     while (getline(in, line)) {
-        // strip spaces
-        string filtered;
-        for (char ch : line) {
-            if (!isspace((unsigned char)ch))
-                filtered.push_back(ch);
-        }
-        if (filtered.empty())
-            continue;
-
-        if (rowCount >= 9) break;
-
-        if ((int)filtered.size() < 9) {
-            cerr << "Error: each non-empty line must have at least 9 chars\n";
-            return false;
-        }
-
-        for (int c = 0; c < 9; ++c) {
-            char ch = filtered[c];
-            if (ch == '.' || ch == '0') {
-                grid[rowCount][c] = 0;
-            } else if (ch >= '1' && ch <= '9') {
-                grid[rowCount][c] = ch - '0';
-            } else {
-                // treat as blank
-                grid[rowCount][c] = 0;
+        for (unsigned char ch : line) {
+            if (!isspace(ch)) {
+                all.push_back(ch);
             }
         }
-        rowCount++;
-        if (rowCount == 9) break;
     }
 
-    if (rowCount != 9) {
-        cerr << "Error: expected 9 rows in puzzle\n";
+    if ((int)all.size() != 81) {
+        cerr << "Error: expected exactly 81 non-whitespace characters, got "
+             << all.size() << "\n";
         return false;
     }
+
+    // Map each of the 81 chars into grid[row][col]
+    for (int k = 0; k < 81; ++k) {
+        char ch = all[k];
+        int r = k / 9;
+        int c = k % 9;
+
+        if (ch >= '1' && ch <= '9') {
+            grid[r][c] = ch - '0';
+        } else if (ch == '0' || ch == '.' || ch == '*' || ch == '?') {
+            grid[r][c] = 0; // wildcard = empty
+        } else {
+            // treat as error
+            cerr << "Error: invalid character '" << ch
+                 << "' at position " << k << "\n";
+            return false;
+        }
+    }
+
     return true;
 }
 
+
 int main(int argc, char *argv[]) {
-    bool extended = false;
     string filename;
 
-    // Very light CLI: sud2sat [-e] [puzzlefile]
-    int argi = 1;
-    while (argi < argc) {
-        string a = argv[argi];
-        if (a == "-e" || a == "--extended") {
-            extended = true;
-            ++argi;
-        } else {
-            filename = a;
-            ++argi;
-        }
+    // Usage: sud2sat [puzzlefile]
+    // If puzzlefile is omitted, read from STDIN.
+    if (argc >= 2) {
+        filename = argv[1];
     }
 
     istream *in = &cin;
+    static ifstream fin;
     if (!filename.empty()) {
-        static ifstream fin;
         fin.open(filename.c_str());
         if (!fin) {
             cerr << "Error: cannot open puzzle file " << filename << "\n";
@@ -262,32 +298,24 @@ int main(int argc, char *argv[]) {
 
     int grid[9][9];
     if (!read_grid(*in, grid)) {
+        // read_grid already prints a clear message
         return 1;
     }
 
-    // Build clauses
+    // --- Build minimal encoding clauses ---
     clauses.clear();
-
-    // Minimal encoding
     add_cell_at_least_one();
     add_row_at_most_one();
     add_col_at_most_one();
     add_box_at_most_one();
 
-    // Givens
+    // Add givens (unit clauses for clues)
     add_givens(grid);
 
-    // Extended
-    if (extended) {
-        add_cell_at_most_one();
-        add_row_at_least_one();
-        add_col_at_least_one();
-        add_box_at_least_one();
-    }
-
-    // Output DIMACS
+    // --- Output DIMACS CNF ---
     int numClauses = (int)clauses.size();
     cout << "p cnf " << NUM_VARS << " " << numClauses << "\n";
+
     for (const auto &cl : clauses) {
         for (int lit : cl) {
             cout << lit << " ";
@@ -297,3 +325,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
