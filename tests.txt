@@ -1,0 +1,3 @@
+https://projecteuler.net/project/resources/p096_sudoku.txt
+
+http://magictour.free.fr/top95

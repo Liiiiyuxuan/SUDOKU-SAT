@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # usage: ./solve.sh 1
 #        ./solve.sh 2   # next run, etc.
