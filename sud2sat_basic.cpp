@@ -193,47 +193,6 @@ void add_givens(const int grid[9][9]) {
 
 // ---- IO helpers ----
 
-// bool read_grid(istream &in, int grid[9][9]) {
-//     int rowCount = 0;
-//     string line;
-//     while (getline(in, line)) {
-//         // strip spaces
-//         string filtered;
-//         for (char ch : line) {
-//             if (!isspace((unsigned char)ch))
-//                 filtered.push_back(ch);
-//         }
-//         if (filtered.empty())
-//             continue;
-
-//         if (rowCount >= 9) break;
-
-//         if ((int)filtered.size() < 9) {
-//             cerr << "Error: each non-empty line must have at least 9 chars\n";
-//             return false;
-//         }
-
-//         for (int c = 0; c < 9; ++c) {
-//             char ch = filtered[c];
-//             if (ch == '.' || ch == '0') {
-//                 grid[rowCount][c] = 0;
-//             } else if (ch >= '1' && ch <= '9') {
-//                 grid[rowCount][c] = ch - '0';
-//             } else {
-//                 // treat as blank
-//                 grid[rowCount][c] = 0;
-//             }
-//         }
-//         rowCount++;
-//         if (rowCount == 9) break;
-//     }
-
-//     if (rowCount != 9) {
-//         cerr << "Error: expected 9 rows in puzzle\n";
-//         return false;
-//     }
-//     return true;
-// }
 
 bool read_grid(istream &in, int grid[9][9]) {
     string all;
