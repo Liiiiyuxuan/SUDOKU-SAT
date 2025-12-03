@@ -1,6 +1,6 @@
 # Mini Project – SAT-based Sudoku Solving
 
-**Collaborators:** Eason Li (21069463) and Michael Mao(21070968)
+**Collaborators:** Eason Li (21069463) and Michael Mao (21070968)
 
 ## Overview
 
