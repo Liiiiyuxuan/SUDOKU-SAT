@@ -13,8 +13,8 @@ Metric: Eliminated clauses
   Worst case              : 0.000 (on Grid 01)
 
 Metric: Memory used
-  Average over 50 puzzles : 5.248
-  Worst case              : 5.600 (on Grid 18)
+  Average over 50 puzzles : 5.287
+  Worst case              : 5.630 (on Grid 46)
 
 Metric: Number of clauses
   Average over 50 puzzles : 8829.000
@@ -58,15 +58,15 @@ All puzzles SAT? YES
 
 Metric: CPU time
   Average over 50 puzzles : 0.005
-  Worst case              : 0.005 (on Grid 03)
+  Worst case              : 0.011 (on Grid 01)
 
 Metric: Eliminated clauses
   Average over 50 puzzles : 0.000
   Worst case              : 0.000 (on Grid 03)
 
 Metric: Memory used
-  Average over 50 puzzles : 5.208
-  Worst case              : 5.450 (on Grid 02)
+  Average over 50 puzzles : 5.238
+  Worst case              : 5.680 (on Grid 08)
 
 Metric: Number of clauses
   Average over 50 puzzles : 9525.568

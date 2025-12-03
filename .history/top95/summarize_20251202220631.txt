@@ -1,0 +1,121 @@
+Sudoku SAT Encoding Report: Minimal vs Extended Encodings (top95 benchmark)
+
+Benchmark Setup
+---------------
+We compared two SAT encodings of Sudoku:
+- Minimal encoding: sud2sat
+- Extended encoding: sud2sat1
+
+Both encodings were run on the same 95 puzzles from top95/top95_reformatted.txt. All 95 puzzles were satisfiable under both encodings.
+
+1. Encoding Size
+----------------
+
+Variables
+- Minimal:  average 729.0 variables
+- Extended: average 729.0 variables
+
+As expected, the choice of encoding does not change the number of Boolean variables. Both encodings use the same standard representation of Sudoku (9×9 grid, 9 possible digits per cell).
+
+Clauses
+- Minimal:  average 8829.0 clauses, worst case 8829.0 (Grid 01)
+- Extended: average 9525.568 clauses, worst case 9703.0 (Grid 21)
+
+The extended encoding introduces additional clauses compared to the minimal encoding. On average, the increase in clauses is
+
+  9525.568 - 8829 = 697
+
+This is roughly a 7.9% increase in the number of clauses:
+
+  (9525.568 - 8829) / 8829 ≈ 0.079
+
+Thus, on this benchmark the extended encoding is noticeably larger than the minimal one, but still within the same order of magnitude.
+
+Memory Used
+- Minimal:  average 5.277, worst case 5.600 (Grid 03)
+- Extended: average 5.247, worst case 5.600 (Grid 07)
+
+Interestingly, despite having more clauses, the extended encoding uses slightly *less* memory on average in these runs (about 0.6% less). The worst-case memory usage is the same for both encodings. This small difference is likely within normal variation of the solver’s internal data structures.
+
+2. Solver Performance
+---------------------
+
+CPU Time
+- Minimal:  average 0.005, worst case 0.010 (Grid 50)
+- Extended: average 0.005, worst case 0.005 (Grid 03)
+
+Average CPU time is essentially identical for both encodings on this benchmark. However, the worst-case time is halved: the hardest puzzle for the minimal encoding takes 0.010 time units, compared to 0.005 for the extended encoding. Given the coarse timing resolution, both encodings still appear very fast overall, but the extended encoding avoids the more expensive outliers.
+
+Internal search statistics show much larger differences.
+
+Conflicts
+- Minimal:  average 153.874 conflicts, worst case 1086 (Grid 50)
+- Extended: average 9.958 conflicts, worst case 40 (Grid 03)
+
+The extended encoding dramatically reduces the number of conflicts. On average, the extended encoding has about
+
+  153.874 / 9.958 ≈ 15.4
+
+times fewer conflicts than the minimal encoding.
+
+Decisions
+- Minimal:  average 268.621 decisions, worst case 1823 (Grid 50)
+- Extended: average 22.979 decisions, worst case 92 (Grid 03)
+
+The number of decisions is also dramatically reduced. On average, the extended encoding needs about
+
+  268.621 / 22.979 ≈ 11.7
+
+times fewer decisions than the minimal encoding, and the worst-case number of decisions drops by almost a factor of 20.
+
+Propagations
+- Minimal:  average 6986.853 propagations, worst case 48634 (Grid 50)
+- Extended: average 1420.084 propagations, worst case 3205 (Grid 74)
+
+Propagations are reduced by about
+
+  6986.853 / 1420.084 ≈ 4.9
+
+i.e., nearly a factor of 5 on average. The worst-case scenario also improves significantly: from 48634 propagations down to 3205.
+
+Conflict Literals and Restarts
+- Minimal:  average conflict literals 1946.779, worst case 17120 (Grid 50)
+- Extended: average conflict literals 57.737, worst case 254 (Grid 03)
+
+This is another reduction of roughly
+
+  1946.779 / 57.737 ≈ 33.7
+
+times fewer conflict literals on average.
+
+- Minimal:  average restarts 1.874, worst case 7 (Grid 11)
+- Extended: average restarts 1.000, worst case 1 (Grid 01)
+
+The extended encoding almost eliminates the need for restarts: every run uses exactly one restart, with no difficult instances requiring multiple restarts as in the minimal encoding.
+
+3. Interpretation
+-----------------
+
+The minimal encoding is more compact in terms of clause count, but it provides weaker propagation. As a consequence, the SAT solver has to perform many more decisions and encounters many more conflicts and propagations to solve the same puzzles. This is especially visible on the hardest instances, where the minimal encoding leads to thousands of conflicts and tens of thousands of propagations.
+
+The extended encoding adds redundant constraints (extra clauses) that strengthen propagation. Even though this increases the clause count by about 8%, it makes the search substantially easier:
+
+- ~15× fewer conflicts on average,
+- ~12× fewer decisions on average,
+- ~5× fewer propagations on average,
+- ~34× fewer conflict literals on average,
+- and no multi-restart runs.
+
+In other words, the extended encoding guides the solver much more effectively, allowing it to deduce more from unit propagation and backjumping, and thereby reducing the amount of explicit search.
+
+4. Conclusion
+-------------
+
+For the top95/top95_reformatted.txt benchmark (95 difficult Sudoku puzzles), both the minimal (sud2sat) and extended (sud2sat1) encodings use the same number of variables and achieve similar average CPU times. However, the extended encoding introduces about 8% more clauses and in return yields a vastly simpler search process:
+
+- ~15× fewer conflicts,
+- ~12× fewer decisions,
+- ~5× fewer propagations,
+- and almost no restart overhead.
+
+Thus, even on this harder benchmark set, the extended encoding is clearly preferable: a modest increase in encoding size produces a much stronger SAT formulation with significantly reduced search effort and better worst-case behavior.

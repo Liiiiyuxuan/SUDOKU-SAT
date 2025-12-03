@@ -1,0 +1,94 @@
+We compared two SAT encodings of Sudoku:
+- Minimal encoding: sud2sat
+- Extended encoding: sud2sat1
+
+Both encodings were run on the same 50 puzzles from p096/p096_sudoku.txt. All 50 puzzles were satisfiable under both encodings.
+
+1. Encoding Size
+----------------
+
+Variables
+- Minimal:  average 729.0 variables
+- Extended: average 729.0 variables
+
+The choice of encoding does not change the number of Boolean variables, since both encodings represent the same underlying Sudoku model (9×9 grid, 9 possible digits per cell).
+
+Clauses
+- Minimal:  average 8829.0 clauses, worst case 8829.0 (Grid 01)
+- Extended: average 9092.78 clauses, worst case 9448.0 (Grid 49)
+
+The extended encoding introduces additional clauses. On average, it adds about 264 extra clauses compared to the minimal encoding:
+
+  9092.78 - 8829  264
+
+This corresponds to roughly a 3% increase in the number of clauses. Thus, the extended encoding is slightly larger, but the difference in size is modest.
+
+Memory Used
+- Minimal:  average 5.234, worst case 5.600 (Grid 45)
+- Extended: average 5.249, worst case 5.540 (Grid 46)
+
+Memory usage increases only very slightly when moving from the minimal to the extended encoding (around 0.3% on average). In practice, this difference is negligible.
+
+2. Solver Performance
+---------------------
+
+CPU Time
+- Minimal:  average 0.005, worst case 0.005 (Grid 47)
+- Extended: average 0.005, worst case 0.006 (Grid 46)
+
+The average CPU times are essentially identical for these small instances. The small differences in worst-case times are within typical timing noise; both encodings solve all 50 puzzles in roughly the same wall-clock time.
+
+However, internal SAT solver statistics reveal a significant difference in how hard the search is.
+
+Conflicts
+- Minimal:  average 8.64 conflicts, worst case 109 (Grid 47)
+- Extended: average 0.26 conflicts, worst case 3 (Grid 06)
+
+The extended encoding dramatically reduces the number of conflicts. On average, the extended encoding has about 33 times fewer conflicts than the minimal encoding.
+
+Decisions
+- Minimal:  average 17.30 decisions, worst case 157 (Grid 47)
+- Extended: average 1.50 decisions, worst case 6 (Grid 06)
+
+The extended encoding also reduces the number of decisions by about a factor of 11.5 on average. This indicates that the solver needs far fewer guesses.
+
+Propagations
+- Minimal:  average 949.76 propagations, worst case 4719 (Grid 49)
+- Extended: average 741.06 propagations, worst case 936 (Grid 47)
+
+The number of propagations is reduced by roughly 28% when using the extended encoding.
+
+Restarts and Conflict Literals
+- Minimal:  average restarts 1.02, worst case 2 (Grid 47)
+- Extended: average restarts 1.00, worst case 1 (Grid 01)
+
+- Minimal:  average conflict literals 52.20, worst case 749.00 (Grid 47)
+- Extended: average conflict literals 0.54, worst case 9.00 (Grid 50)
+
+Again, the extended encoding causes much less backtracking activity overall.
+
+3. Interpretation
+-----------------
+
+The minimal encoding is slightly more compact in terms of clauses, but it provides weaker propagation. As a result, the SAT solver needs more decisions and encounters more conflicts to solve the same puzzles.
+
+The extended encoding adds redundant constraints, increasing the number of clauses by about 3%. These additional constraints significantly strengthen unit propagation. The solver can deduce more information without branching, which leads to:
+
+- far fewer decisions,
+- far fewer conflicts,
+- and fewer propagations overall.
+
+Even though clause count and memory usage are slightly higher, the extended encoding makes the search substantially easier.
+
+4. Conclusion
+-------------
+
+On this benchmark (50 Sudoku puzzles from p096/p096_sudoku.txt), the minimal and extended encodings have the same number of variables and very similar memory usage and CPU time. However, the extended encoding produces a much stronger SAT formulation:
+
+- ~3% more clauses,
+- but ~33× fewer conflicts,
+- ~11.5× fewer decisions,
+- and ~28% fewer propagations.
+
+Therefore, the extended encoding is clearly preferable from a SAT-solving perspective: a small increase in encoding size results in a much simpler search space and significantly reduced search effort.
+
