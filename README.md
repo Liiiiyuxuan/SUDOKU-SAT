@@ -40,35 +40,6 @@ This project implements a SAT-based Sudoku solver that converts Sudoku puzzles i
    - Usage: `./solve1.sh <run_number>`
    - Uses `sud2sat1` (extended encoding) instead of `sud2sat`
 
-### Testing and Evaluation
-
-6. **`test_harness.py`** – Automated testing framework
-   - Compares minimal vs extended encodings on puzzle collections
-   - Parses MiniSAT statistics (conflicts, decisions, propagations, etc.)
-   - Generates performance summaries and reports
-   - Usage: `python3 test_harness.py`
-
-### Puzzle Collections
-
-7. **`p096/`** – Project Euler puzzle set
-
-   - `p096_sudoku.txt` – 50 Sudoku puzzles from Project Euler Problem 96
-   - `report.txt` – Detailed performance report
-   - `summarize1.txt` – Summary of encoding comparison results
-
-8. **`top95/`** – Hard puzzle benchmark
-   - `top95.txt` – 95 difficult Sudoku puzzles
-   - `top95_reformatted.txt` – Reformatted version for testing
-   - `reformat.py` – Script to convert puzzle format
-   - `report.txt` – Performance report
-   - `summarize2.txt` – Summary of encoding comparison results
-
-### Documentation
-
-10. **`Sudoku as SAT.pdf`** – Reference material on SAT encoding
-11. **`hw description.pdf`** – Assignment specification
-12. **`tests.txt`** – Links to puzzle sources
-
 ## Encoding Strategies
 
 ### Minimal Encoding (`sud2sat`)
@@ -100,8 +71,6 @@ The extended encoding adds redundant constraints to the minimal encoding:
 - ~11-12× fewer decisions
 - ~28-80% fewer propagations
 - Stronger unit propagation, reducing search space
-
-## Building and Usage
 
 ### Compilation
 
@@ -162,8 +131,6 @@ Example:
 ## Evaluation Results
 
 See summarize1.txt and summarize2.txt for details. 
-
-## Technical Details
 
 ### Variable Encoding
 
