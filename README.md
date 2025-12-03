@@ -40,44 +40,6 @@ This project implements a SAT-based Sudoku solver that converts Sudoku puzzles i
    - Usage: `./solve1.sh <run_number>`
    - Uses `sud2sat1` (extended encoding) instead of `sud2sat`
 
-### Testing and Evaluation
-
-6. **`test_harness.py`** – Automated testing framework
-   - Compares minimal vs extended encodings on puzzle collections
-   - Parses MiniSAT statistics (conflicts, decisions, propagations, etc.)
-   - Generates performance summaries and reports
-   - Usage: `python3 test_harness.py`
-
-### Puzzle Collections
-
-7. **`p096/`** – Project Euler puzzle set
-
-   - `p096_sudoku.txt` – 50 Sudoku puzzles from Project Euler Problem 96
-   - `report.txt` – Detailed performance report
-   - `summarize1.txt` – Summary of encoding comparison results
-
-8. **`top95/`** – Hard puzzle benchmark
-   - `top95.txt` – 95 difficult Sudoku puzzles
-   - `top95_reformatted.txt` – Reformatted version for testing
-   - `reformat.py` – Script to convert puzzle format
-   - `report.txt` – Performance report
-   - `summarize2.txt` – Summary of encoding comparison results
-
-### Input/Output Files
-
-9. **`input/`** – Test inputs and outputs
-   - `00sudoku.in`, `01sudoku.in`, `03sudoku.in` – Sample puzzle files
-   - `*.cnf` – Generated DIMACS CNF files
-   - `*assign.txt` – MiniSAT assignment outputs
-   - `*solution.txt` – Decoded Sudoku solutions
-   - `*stat.txt` – MiniSAT statistics
-
-### Documentation
-
-10. **`Sudoku as SAT.pdf`** – Reference material on SAT encoding
-11. **`hw description.pdf`** – Assignment specification
-12. **`tests.txt`** – Links to puzzle sources
-
 ## Encoding Strategies
 
 ### Minimal Encoding (`sud2sat`)
@@ -110,8 +72,6 @@ The extended encoding adds redundant constraints to the minimal encoding:
 - ~28-80% fewer propagations
 - Stronger unit propagation, reducing search space
 
-## Building and Usage
-
 ### Compilation
 
 ```bash
@@ -134,8 +94,13 @@ g++ -o sat2sud sat2sud.cpp
 # Solve using extended encoding
 ./solve1.sh 0
 
-# Manual pipeline
+# Manual pipeline for minimal encoding
 ./sud2sat < puzzle.in > puzzle.cnf
+minisat puzzle.cnf puzzle.assign > puzzle.stat
+./sat2sud < puzzle.assign > puzzle.solution
+
+# Manual pipeline for extended encoding
+./sud2sat1 < puzzle.in > puzzle.cnf
 minisat puzzle.cnf puzzle.assign > puzzle.stat
 ./sat2sud < puzzle.assign > puzzle.solution
 ```
@@ -166,8 +131,6 @@ Example:
 ## Evaluation Results
 
 See summarize1.txt and summarize2.txt for details. 
-
-## Technical Details
 
 ### Variable Encoding
 
